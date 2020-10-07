@@ -1,0 +1,301 @@
+package edu.cpt167.mazza.project6;
+import java.util.Scanner;
+public class MazzaMainClass 
+{//BEGIN CLASS
+	//AUTHOR: NICK MAZZA
+	//COURSE: CPT 167
+	//PURPOSE: Allows user to select a destination, method of travel, and upgrade
+	//multiple times, keeping track of the selection counts and overall cost.
+	//STARTDATE: 10/4/2020
+	//local variables
+	public static final String DESTINATION_NAME_A="Rome, Italy";
+	public static final String DESTINATION_NAME_B="London, England";
+	public static final String DESTINATION_NAME_C="Key West, Florida";
+	public static final String DESTINATION_NAME_QUIT="Quit";
+	public static final double DESTINATION_PRICE_A=1500;
+	public static final double DESTINATION_PRICE_B=750;
+	public static final double DESTINATION_PRICE_C=500;
+	public static final String TRANSPORTATION_NAME_A="Airplane";
+	public static final String TRANSPORTATION_NAME_B="Ship";
+	public static final double TRANSPORTATION_PRICE_A=500;
+	public static final double TRANSPORTATION_PRICE_B=250;
+	public static final String UPGRADE_NAME_A="First-class transportation";
+	public static final String UPGRADE_NAME_B="First-class lodging";
+	public static final String UPGRADE_NAME_C="Guided Tours";
+	public static final String UPGRADE_NAME_D="All upgraded services";
+	public static final String UPGRADE_NAME_E="No upgraded services";
+	public static final double UPGRADE_PRICE_A=75;
+	public static final double UPGRADE_PRICE_B=125;
+	public static final double UPGRADE_PRICE_C=50;
+	public static final double UPGRADE_PRICE_D=200;
+	public static final double UPGRADE_PRICE_E=0;
+	public static void main(String[] args)
+	{//BEGIN MAIN METHOD
+		Scanner input = new Scanner (System.in);
+		//local variables
+		String userName="";
+		char destinationSelection=' ';
+		char transportationSelection=' ';
+		char upgradeSelection=' ';
+		String destinationName="";
+		String transportationName="";
+		String upgradeName="";
+		double lodgingCost=0.0;
+		double transportationCost=0.0;
+		double upgradeCost=0.0;
+		double tripCost=0.0;
+		int destinationCountA=0;
+		int destinationCountB=0;
+		int destinationCountC=0;
+		int transportationCountA=0;
+		int transportationCountB=0;
+		int upgradeCountA=0;
+		int upgradeCountB=0;
+		int upgradeCountC=0;
+		int upgradeCountD=0;
+		int upgradeCountE=0;
+		int tripCounter=0;
+		double totalTripSales=0.0;
+		//start of method
+		//invoke statements
+		displayWelcomeBanner();
+		userName=getUserName(input);
+		destinationSelection= validateDestinationSelection(input);
+		while(destinationSelection !='Q')
+		{//BEGIN while !=Q
+			transportationSelection=validateTransportationSelection(input);
+			upgradeSelection=validateUpgradeSelection(input);
+			if (destinationSelection=='A')
+			{//BEGIN if ==A
+				destinationName= DESTINATION_NAME_A;
+				lodgingCost=DESTINATION_PRICE_A;
+				destinationCountA++;
+			}//END if==A
+			else if (destinationSelection=='B')
+			{//BEGIN if==B
+				destinationName=DESTINATION_NAME_B;
+				lodgingCost=DESTINATION_PRICE_B;
+				destinationCountB++;
+			}//END if==B
+			else
+			{//BEGIN if==C
+				destinationName=DESTINATION_NAME_C;
+				lodgingCost=DESTINATION_PRICE_C;
+				destinationCountC++;
+			}//end if==C
+			if(transportationSelection=='A')
+			{//BEGIN if==A
+				transportationName=TRANSPORTATION_NAME_A;
+				transportationCost=TRANSPORTATION_PRICE_A;
+				transportationCountA++;
+			}//END if==A
+			else
+			{//BEGIN if==B
+				transportationName=TRANSPORTATION_NAME_B;
+				transportationCost=TRANSPORTATION_PRICE_B;
+				transportationCountB++;
+			}//END if==B
+			if(upgradeSelection=='A')
+			{//BEGIN if==A
+				upgradeName=UPGRADE_NAME_A;
+				upgradeCost=UPGRADE_PRICE_A;
+				upgradeCountA++;
+			}//END if==A
+			else if(upgradeSelection=='B')
+			{//BEGIN if==B
+				upgradeName=UPGRADE_NAME_B;
+				upgradeCost=UPGRADE_PRICE_B;
+				upgradeCountB++;
+			}//END if==B
+			else if (upgradeSelection=='C')
+			{//BEGIN if==C
+				upgradeName=UPGRADE_NAME_C;
+				upgradeCost=UPGRADE_PRICE_C;
+				upgradeCountC++;
+			}//END if==C
+			else if (upgradeSelection=='D')
+			{//BEGIN if==D
+				upgradeName=UPGRADE_NAME_D;
+				upgradeCost=UPGRADE_PRICE_D;
+				upgradeCountD++;
+			}//END if==D
+			else
+			{//BEGIN if==E
+				upgradeName=UPGRADE_NAME_E;
+				upgradeCost=UPGRADE_PRICE_E;
+				upgradeCountE++;
+			}//END if==E
+			tripCost=lodgingCost+transportationCost+upgradeCost;
+			tripCounter++;
+			totalTripSales=totalTripSales+tripCost;
+			//end of processes, display receipt and loop
+			displayTripReport(destinationName, lodgingCost, transportationName,
+					transportationCost,upgradeName, upgradeCost,tripCost);
+			destinationSelection=validateDestinationSelection(input);
+		}//END while !=Q
+		if (tripCounter > 0)
+		{//BEGIN if > 0
+			displayFinalReport(userName, destinationCountA, destinationCountB,
+					destinationCountC, transportationCountA, transportationCountB, upgradeCountA, upgradeCountB,
+					upgradeCountC, upgradeCountD, upgradeCountE, tripCounter, totalTripSales);
+		}//END if > 0
+		displayFarewellMessage();
+		input.close();
+	}//BEGIN MAIN METHOD
+	public static void displayWelcomeBanner()
+	{//BEGIN dWELBAN METHOD
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("Hello! This is the Vacation Time Travel Agency. Our system ");
+		System.out.println("will help you choose a destination, method of travel, and");
+		System.out.println("one of our special upgrades! We now offer a new feature,");
+		System.out.println("planning multiple trips at once! We will have a grand total");
+		System.out.println("ready when you are finished and select "+DESTINATION_NAME_QUIT+".");
+	}//END dWELBAN METHOD
+	public static void displayFarewellMessage()
+	{//BEGIN dFARMES METHOD
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("Thank you for choosing Vacation Time Travel Agency!");
+		System.out.println("Where you're always just in time! Have a good day!");
+	}//END dFARMES METHOD
+	public static void displayTripReport(String borrowedDestinationName, double borrowedLodgingCost,
+			String borrowedTransportationName, double borrowedTransportationCost, String borrowedUpgradeName, 
+			double borrowedUpgradeCost, double borrowedTripCost)
+	{//BEGIN dTRIREP METHOD
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("TRIP REPORT");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.printf("%-25s%-20s\n","Destination Name",borrowedDestinationName);
+		System.out.printf("%-25s%1s%8.2f\n","Lodging Price","$",borrowedLodgingCost);
+		System.out.println();
+		System.out.printf("%-25s%-20s\n","Transportation Type",borrowedTransportationName);
+		System.out.printf("%-25s%1s%8.2f\n","Transportation Price","$",borrowedTransportationCost);
+		System.out.println();
+		System.out.printf("%-25s%-20s\n","Upgrade Selection",borrowedUpgradeName);
+		System.out.printf("%-25s%1s%8.2f\n","Upgrade Price","$",borrowedUpgradeCost);
+		System.out.println();
+		System.out.printf("%-25s%1s%8.2f\n","Total Trip Cost","$",borrowedTripCost);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	}//END dTRIREP METHOD
+	public static void displayFinalReport(String borrowedUserName, int borrowedDestinationCountA,
+			int borrowedDestinationCountB, int borrowedDestinationCountC, int borrowedTransportationCountA,
+			int borrowedTransportationCountB, int borrowedUpgradeCountA, int borrowedUpgradeCountB,
+			int borrowedUpgradeCountC, int borrowedUpgradeCountD, int borrowedUpgradeCountE, int borrowedTripCounter, 
+			double borrowedTotalTripSales)
+	{//BEGIN dFINREP METHOD
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("Final Report");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.printf("%-30s%-15s\n","Traveler Name",borrowedUserName);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("Count of Trips:");
+		System.out.printf("%-30s%1s%8d\n",DESTINATION_NAME_A,"#",borrowedDestinationCountA);
+		System.out.printf("%-30s%1s%8d\n",DESTINATION_NAME_B,"#",borrowedDestinationCountB);
+		System.out.printf("%-30s%1s%8d\n",DESTINATION_NAME_C,"#",borrowedDestinationCountC);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("Count of Transportation Options:");
+		System.out.printf("%-30s%1s%8d\n",TRANSPORTATION_NAME_A,"#",borrowedTransportationCountA);
+		System.out.printf("%-30s%1s%8d\n",TRANSPORTATION_NAME_B,"#",borrowedTransportationCountB);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("Count of Upgrades:");
+		System.out.printf("%-30s%1s%8d\n",UPGRADE_NAME_A,"#",borrowedUpgradeCountA);
+		System.out.printf("%-30s%1s%8d\n",UPGRADE_NAME_B,"#",borrowedUpgradeCountB);
+		System.out.printf("%-30s%1s%8d\n",UPGRADE_NAME_C,"#",borrowedUpgradeCountC);
+		System.out.printf("%-30s%1s%8d\n",UPGRADE_NAME_D,"#",borrowedUpgradeCountD);
+		System.out.printf("%-30s%1s%8d\n",UPGRADE_NAME_E,"#",borrowedUpgradeCountE);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.printf("%-30s%1s%8d\n","Count of all trips","#",borrowedTripCounter);
+		System.out.printf("%-30s%1s%8.2f\n","Total Trip Sales","$",borrowedTotalTripSales);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	}//END dFINREP METHOD
+	public static void displayDestinationMenu()
+	{//BEGIN dDESMEN
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("DESTINATION MENU");
+		System.out.printf("%-5s%-20s%1s%8.2f%13s\n","[A]",DESTINATION_NAME_A,"$",DESTINATION_PRICE_A,"/5 day stay");
+		System.out.printf("%-5s%-20s%1s%8.2f%13s\n","[B]",DESTINATION_NAME_B,"$",DESTINATION_PRICE_B,"/5 day stay");
+		System.out.printf("%-5s%-20s%1s%8.2f%13s\n","[C]",DESTINATION_NAME_C,"$",DESTINATION_PRICE_C,"/5 day stay");
+		System.out.printf("%-5s%-10s\n","[Q]",DESTINATION_NAME_QUIT);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.print("Enter your selection here:");
+	}//END dDESMEN
+	public static void displayTransportationMenu()
+	{//BEGIN dTRAMEN
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("TRANSPORTATION MENU");
+		System.out.printf("%-5s%-15s%1s%7.2f%6s\n","[A]",TRANSPORTATION_NAME_A,"$",TRANSPORTATION_PRICE_A,"/seat");
+		System.out.printf("%-5s%-15s%1s%7.2f%6s\n","[B]",TRANSPORTATION_NAME_B,"$",TRANSPORTATION_PRICE_B,"/seat");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.print("Enter your selection here:");
+	}//END dTRAMEN
+	public static void displayUpgradeMenu()
+	{//BEGIN dUPGMEN
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("UPGRADE MENU");
+		System.out.printf("%-5s%-30s%1s%9.2f\n","[A]",UPGRADE_NAME_A,"$",UPGRADE_PRICE_A);
+		System.out.printf("%-5s%-30s%1s%9.2f\n","[B]",UPGRADE_NAME_B,"$",UPGRADE_PRICE_B);
+		System.out.printf("%-5s%-30s%1s%9.2f\n","[C]",UPGRADE_NAME_C,"$",UPGRADE_PRICE_C);
+		System.out.printf("%-5s%-30s%1s%9.2f\n","[D]",UPGRADE_NAME_D,"$",UPGRADE_PRICE_D);
+		System.out.printf("%-5s%-30s%1s%9.2f\n","[E]",UPGRADE_NAME_E,"$",UPGRADE_PRICE_E);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.print("Enter your selection here:");
+	}//END dUPGMEN
+	public static String getUserName(Scanner borrowedInput)
+	{//BEGIN gUSENAME METHOD
+		//local variable
+		String localUserName=" ";
+		//prime read
+		System.out.println("What is your name?");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.print("NAME:");
+		localUserName=borrowedInput.nextLine();
+		return localUserName;
+	}//END gUSENAME METHOD
+	public static char validateDestinationSelection(Scanner borrowedInput)
+	{//BEGIN vDESSEL METHOD
+		//local variable
+		char localSelection=' ';
+		//prime read
+		displayDestinationMenu();
+		localSelection=borrowedInput.next().toUpperCase().charAt(0);
+		//validation loop
+		while (localSelection!='A' && localSelection!='B' && localSelection!='C' && localSelection!='Q')
+		{//BEGIN VAL LOOP
+			System.out.println("ERROR-- please input a valid response");
+			displayDestinationMenu();
+			localSelection=borrowedInput.next().toUpperCase().charAt(0);
+		}//END VAL LOOP
+		return localSelection;
+	}//END vDESSEL METHOD
+	public static char validateTransportationSelection(Scanner borrowedInput)
+	{//BEGIN vTRASEL METHOD
+		//local variable
+		char localSelection=' ';
+		//prime read
+		displayTransportationMenu();
+		localSelection=borrowedInput.next().toUpperCase().charAt(0);
+		//validation loop 
+		while (localSelection!='A' && localSelection!='B')
+		{//BEGIN VAL LOOP
+			System.out.println("ERROR-- please input a valid response");
+			displayTransportationMenu();
+			localSelection=borrowedInput.next().toUpperCase().charAt(0);
+		}//END VAL LOOP
+		return localSelection;
+	}//END vTRASEL METHOD
+	public static char validateUpgradeSelection(Scanner borrowedInput)
+	{//BEGIN vUPGSEL METHOD
+		//local variable
+		char localSelection=' ';
+		//prime read
+		displayUpgradeMenu();
+		localSelection=borrowedInput.next().toUpperCase().charAt(0);
+		//validation loop
+		while (localSelection!='A' && localSelection!='B' && localSelection!='C' && localSelection!='D' && localSelection!='E')
+		{//BEGIN VAL LOOP
+			System.out.println("ERROR-- please input a valid response");
+			displayUpgradeMenu();
+			localSelection=borrowedInput.next().toUpperCase().charAt(0);
+		}//END VAL LOOP
+		return localSelection;
+	}//END vUPGSEL METHOD
+}//END CLASS
